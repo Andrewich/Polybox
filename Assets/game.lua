@@ -144,8 +144,8 @@ function Update(deltaTime)
 
     DrawCircle(x, y, 5, 1, 1, 1, 1)
     DrawText("MouseX: " .. x, 20, 20, 20)
-    DrawText("MouseY: " .. y, 20, 40, 20)
-    DrawText("Text Input: " .. text, 20, 140, 20)
+    DrawText("MouseY: " .. y, 20, 40, 20)    
+    DrawText("Please, insert a disk...", 20, 140, 20)
 end
 
 function End()
