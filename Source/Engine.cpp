@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 	{
 		std::string hello = std::format("{} {}!", "hello", "world");
 
-		int winWidth = 1280;
-		int winHeight = 960;
+		int winWidth = 800;
+		int winHeight = 600;
 
 		SDL_Window* pWindow = SDL_CreateWindow(
 			"Polybox",
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 		HWND hwnd = wmInfo.info.win.window;
 
 		bgfx::Init init;
-		init.type = bgfx::RendererType::Direct3D11;
+		init.type = bgfx::RendererType::Count;
 		init.platformData.ndt = NULL;
 		init.platformData.nwh = wmInfo.info.win.window;
 
@@ -93,10 +93,15 @@ int main(int argc, char *argv[])
 			}
 		}
 
+		SDL_SetWindowGrab(pWindow, SDL_TRUE);
+		SDL_ShowCursor(SDL_DISABLE);
+
 		bool gameRunning = true;
 		float deltaTime = 0.016f;
 	    Vec2i relativeMouseStartLocation{ Vec2i(0, 0) };
 		bool isCapturingMouse = false;
+		bool debugStats = false;		
+
 		while (gameRunning)
 		{
 			Uint64 frameStart = SDL_GetPerformanceCounter();
@@ -125,6 +130,25 @@ int main(int argc, char *argv[])
 								SDL_WarpMouseGlobal(relativeMouseStartLocation.x, relativeMouseStartLocation.y);
 							}
 						}
+
+						if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+						{
+							gameRunning = false;
+							break;
+						}
+
+						if (event.key.keysym.scancode == SDL_SCANCODE_F1)
+						{
+							if (debugStats) {
+								bgfx::setDebug(BGFX_DEBUG_NONE);
+								debugStats = false;
+							}
+							else
+							{
+								bgfx::setDebug(BGFX_DEBUG_STATS);
+								debugStats = true;
+							}							
+						}						
 					}
 					break;
 				case SDL_WINDOWEVENT:
@@ -164,8 +188,7 @@ int main(int argc, char *argv[])
 			}
 
 			gpu.DrawFrame((float)winWidth, (float)winHeight);
-
-			//bgfx::setDebug(BGFX_DEBUG_STATS);
+			
 			bgfx::frame();
 
 			deltaTime = float(SDL_GetPerformanceCounter() - frameStart) / SDL_GetPerformanceFrequency();

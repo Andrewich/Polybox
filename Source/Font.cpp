@@ -38,11 +38,11 @@ Font::Font(std::string path, bool antialiasing, float weight)
     FT_Get_MM_Var(face, &pVar);
 
     int weightIndex = -1;
-    for (int i = 0; i < (int)pVar->num_axis; i++)
+    /*for (int i = 0; i < (int)pVar->num_axis; i++)
     {
         if (pVar->axis[i].name == "Weight")
             weightIndex = i;
-    }
+    }*/
 
     if (weightIndex > -1)
     {
