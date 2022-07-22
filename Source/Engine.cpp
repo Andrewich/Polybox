@@ -1,5 +1,7 @@
 // Copyright 2020-2022 David Colson. All rights reserved.
 
+#ifndef _LIB
+
 #include "Engine.h"
 
 #include "Core/Vec3.h"
@@ -54,7 +56,7 @@ int main(int argc, char *argv[])
 		HWND hwnd = wmInfo.info.win.window;
 
 		bgfx::Init init;
-		init.type = bgfx::RendererType::Count;
+		init.type = bgfx::RendererType::Direct3D11;
 		init.platformData.ndt = NULL;
 		init.platformData.nwh = wmInfo.info.win.window;
 
@@ -210,3 +212,5 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+
+#endif //_LIB
