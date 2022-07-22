@@ -175,13 +175,11 @@ private:
     bgfx::UniformHandle m_fogDepthsUniform{ BGFX_INVALID_HANDLE };
     bgfx::UniformHandle m_fogColorUniform{ BGFX_INVALID_HANDLE };
 
-    bgfx::ProgramHandle m_fullscreenTexProgram{ BGFX_INVALID_HANDLE };
-    bgfx::ProgramHandle m_crtProgram{ BGFX_INVALID_HANDLE };
+    bgfx::ProgramHandle m_fullscreenTexProgram{ BGFX_INVALID_HANDLE };    
     bgfx::FrameBufferHandle m_frameBuffer3D{ BGFX_INVALID_HANDLE };
     bgfx::FrameBufferHandle m_frameBuffer2D{ BGFX_INVALID_HANDLE };
     bgfx::FrameBufferHandle m_frameBufferComposite{ BGFX_INVALID_HANDLE };
-    bgfx::UniformHandle m_frameBufferSampler{ BGFX_INVALID_HANDLE };
-    bgfx::UniformHandle m_crtDataUniform{ BGFX_INVALID_HANDLE };
+    bgfx::UniformHandle m_frameBufferSampler{ BGFX_INVALID_HANDLE };    
 
     Font m_defaultFont;
 };

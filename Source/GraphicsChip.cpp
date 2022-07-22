@@ -154,18 +154,6 @@ void GraphicsChip::Init()
         m_fullscreenTexProgram = bgfx::createProgram(vsShader, fsShader, true);
     }
 
-    {
-        const bgfx::Memory* pFsShaderMem = nullptr;
-        pFsShaderMem = shaderc::compileShader(shaderc::ST_FRAGMENT, "Shaders/crt.fs", "", "Shaders/varying.def.sc");
-        bgfx::ShaderHandle fsShader = bgfx::createShader(pFsShaderMem);
-
-        const bgfx::Memory* pVsShaderMem = nullptr;
-        pVsShaderMem = shaderc::compileShader(shaderc::ST_VERTEX, "Shaders/fullscreen.vs", "", "Shaders/varying.def.sc");
-        bgfx::ShaderHandle vsShader = bgfx::createShader(pVsShaderMem);
-
-        m_crtProgram = bgfx::createProgram(vsShader, fsShader, true);
-    }
-
     for (size_t i = 0; i < 3; i++)
     {
         m_matrixStates[i] = Matrixf::Identity();
@@ -202,8 +190,7 @@ void GraphicsChip::Init()
     m_lightColorUniform = bgfx::createUniform("u_lightColor", bgfx::UniformType::Vec4, MAX_LIGHTS);
     m_lightAmbientUniform = bgfx::createUniform("u_lightAmbient", bgfx::UniformType::Vec4);
     m_fogDepthsUniform = bgfx::createUniform("u_fogDepths", bgfx::UniformType::Vec4);
-    m_fogColorUniform = bgfx::createUniform("u_fogColor", bgfx::UniformType::Vec4);
-    m_crtDataUniform = bgfx::createUniform("u_crtData", bgfx::UniformType::Vec4);
+    m_fogColorUniform = bgfx::createUniform("u_fogColor", bgfx::UniformType::Vec4);    
 }
 
 // ***********************************************************************
@@ -237,14 +224,11 @@ void GraphicsChip::DrawFrame(float w, float h)
     bgfx::setViewRect(m_realWindowView, 0, 0, (uint16_t)w, (uint16_t)h);
     bgfx::setViewMode(m_realWindowView, bgfx::ViewMode::Sequential);
 
-    Vec4f crtData = Vec4f(w, h, float(SDL_GetTicks()) / 1000.0f, 0.0f);
-	bgfx::setUniform(m_crtDataUniform, &crtData);
-
     bgfx::setState(BGFX_STATE_WRITE_RGB );
 	bgfx::setViewTransform(m_realWindowView, NULL, &ortho);
     bgfx::setTexture(0, m_frameBufferSampler, bgfx::getTexture(m_frameBufferComposite));
     FullScreenQuad(w, h, 0.0f, true, 0.0f);
-    bgfx::submit(m_realWindowView, m_crtProgram);
+    bgfx::submit(m_realWindowView, m_fullscreenTexProgram);
 
     for (size_t i = 0; i < (int)EMatrixMode::Count; i++)
     {
